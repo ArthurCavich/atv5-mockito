@@ -39,4 +39,11 @@ public class FuncionarioService {
         funcionario.setEmFerias(true);
         return repositorio.save(funcionario);
     }
+
+    @Transactional
+    public void apagarPorId(Integer id) {
+        Funcionario funcionario = repositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com id: " + id));
+        repositorio.delete(funcionario);
+    }
 }

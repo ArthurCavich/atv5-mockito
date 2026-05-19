@@ -36,5 +36,12 @@ public class ServicoService {
         servico.setDisponivel(false);
         return repositorio.save(servico);
     }
+
+    @Transactional
+    public void apagarPorId(Integer id) {
+        Servico servico = repositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com id: " + id));
+        repositorio.delete(servico);
+    }
 }
 

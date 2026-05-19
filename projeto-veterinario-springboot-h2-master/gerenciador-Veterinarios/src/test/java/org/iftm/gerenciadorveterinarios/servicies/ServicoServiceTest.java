@@ -77,4 +77,18 @@ public class ServicoServiceTest {
         verify(repositorio).findById(id);
         verify(repositorio).save(servico);
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao apagar serviço inexistente e não chamar delete")
+    public void deveLancarExcecaoAoApagarQuandoIdNaoExistir() {
+        Integer idInexistente = 999;
+        when(repositorio.findById(idInexistente)).thenReturn(Optional.empty());
+
+        RuntimeException excecao = assertThrows(RuntimeException.class, () -> {
+            service.apagarPorId(idInexistente);
+        });
+        assertEquals("Serviço não encontrado com id: 999", excecao.getMessage());
+
+        verify(repositorio, never()).delete(any());
+    }
 }

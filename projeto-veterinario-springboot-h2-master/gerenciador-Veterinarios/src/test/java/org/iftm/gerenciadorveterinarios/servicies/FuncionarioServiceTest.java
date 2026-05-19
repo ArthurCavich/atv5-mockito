@@ -77,4 +77,18 @@ public class FuncionarioServiceTest {
         verify(repositorio).findById(id);
         verify(repositorio).save(funcionario);
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao apagar funcionário inexistente e não chamar delete")
+    public void deveLancarExcecaoAoApagarQuandoIdNaoExistir() {
+        Integer idInexistente = 999;
+        when(repositorio.findById(idInexistente)).thenReturn(Optional.empty());
+
+        RuntimeException excecao = assertThrows(RuntimeException.class, () -> {
+            service.apagarPorId(idInexistente);
+        });
+        assertEquals("Funcionário não encontrado com id: 999", excecao.getMessage());
+
+        verify(repositorio, never()).delete(any());
+    }
 }
