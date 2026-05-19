@@ -31,4 +31,12 @@ public class FuncionarioService {
         }
         return repositorio.save(funcionario);
     }
+
+    @Transactional
+    public Funcionario concederFerias(Integer id) {
+        Funcionario funcionario = repositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com id: " + id));
+        funcionario.setEmFerias(true);
+        return repositorio.save(funcionario);
+    }
 }

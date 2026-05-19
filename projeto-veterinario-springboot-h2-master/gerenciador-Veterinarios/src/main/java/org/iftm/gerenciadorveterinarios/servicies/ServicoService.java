@@ -28,5 +28,13 @@ public class ServicoService {
         }
         return repositorio.save(servico);
     }
+
+    @Transactional
+    public Servico indisponibilizar(Integer id) {
+        Servico servico = repositorio.findById(id)
+                .orElseThrow(() -> new RuntimeException("Serviço não encontrado com id: " + id));
+        servico.setDisponivel(false);
+        return repositorio.save(servico);
+    }
 }
 

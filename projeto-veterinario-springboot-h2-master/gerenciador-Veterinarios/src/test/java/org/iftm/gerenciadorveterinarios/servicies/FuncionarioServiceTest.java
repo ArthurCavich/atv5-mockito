@@ -3,11 +3,13 @@ package org.iftm.gerenciadorveterinarios.servicies;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.iftm.gerenciadorveterinarios.entities.Funcionario;
 import org.iftm.gerenciadorveterinarios.repositories.FuncionarioRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import org.junit.jupiter.api.DisplayName;
@@ -58,5 +60,21 @@ public class FuncionarioServiceTest {
         assertEquals("Salário não pode ser menor que o mínimo de R$ 1621,00", excecao.getMessage());
 
         verify(repositorio, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Deve conceder férias ao funcionário e persistir alteração")
+    public void deveConcederFeriasAoFuncionario() {
+        Integer id = 1;
+        Funcionario funcionario = new Funcionario(id, "Ana", "Veterinario(a)", BigDecimal.valueOf(5000), false);
+
+        when(repositorio.findById(id)).thenReturn(Optional.of(funcionario));
+        when(repositorio.save(funcionario)).thenReturn(funcionario);
+
+        Funcionario resultado = service.concederFerias(id);
+
+        assertTrue(resultado.isEmFerias());
+        verify(repositorio).findById(id);
+        verify(repositorio).save(funcionario);
     }
 }

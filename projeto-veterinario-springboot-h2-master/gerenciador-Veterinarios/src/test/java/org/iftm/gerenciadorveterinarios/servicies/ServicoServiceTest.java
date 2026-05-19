@@ -1,10 +1,12 @@
 package org.iftm.gerenciadorveterinarios.servicies;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.iftm.gerenciadorveterinarios.entities.Servico;
 import org.iftm.gerenciadorveterinarios.repositories.ServicoRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -58,5 +60,21 @@ public class ServicoServiceTest {
         assertEquals("Valor do serviço não pode ser negativo", excecao.getMessage());
 
         verify(repositorio, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Deve indisponibilizar serviço e persistir alteração")
+    public void deveIndisponibilizarServico() {
+        Integer id = 1;
+        Servico servico = new Servico(id, "Consulta", BigDecimal.valueOf(150), 30, true);
+
+        when(repositorio.findById(id)).thenReturn(Optional.of(servico));
+        when(repositorio.save(servico)).thenReturn(servico);
+
+        Servico resultado = service.indisponibilizar(id);
+
+        assertFalse(resultado.isDisponivel());
+        verify(repositorio).findById(id);
+        verify(repositorio).save(servico);
     }
 }
