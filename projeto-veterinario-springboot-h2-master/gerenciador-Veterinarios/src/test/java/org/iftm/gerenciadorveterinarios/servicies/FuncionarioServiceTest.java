@@ -4,10 +4,12 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-import org.h2.command.dml.MergeUsing;
 import org.iftm.gerenciadorveterinarios.entities.Funcionario;
 import org.iftm.gerenciadorveterinarios.repositories.FuncionarioRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,5 +44,19 @@ public class FuncionarioServiceTest {
         // Assert
         assertEquals(2, resultado.size());
         verify(repositorio).findByEmFerias(false);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao cadastrar funcionário com salário abaixo do mínimo")
+    public void deveLancarExcecaoAoCadastrarComSalarioAbaixoDoMinimo() {
+        Funcionario invalido = new Funcionario(
+                null, "João", "Auxiliar", BigDecimal.valueOf(500), false);
+
+        IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class, () -> {
+            service.cadastrar(invalido);
+        });
+        assertEquals("Salário não pode ser menor que o mínimo de R$ 1621,00", excecao.getMessage());
+
+        verify(repositorio, never()).save(any());
     }
 }

@@ -5,6 +5,9 @@ import java.util.List;
 import org.iftm.gerenciadorveterinarios.entities.Servico;
 import org.iftm.gerenciadorveterinarios.repositories.ServicoRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,5 +44,19 @@ public class ServicoServiceTest {
         // Assert
         assertEquals(2, resultado.size());
         verify(repositorio).findByDisponivel(true);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao cadastrar serviço com valor negativo")
+    public void deveLancarExcecaoAoCadastrarComValorNegativo() {
+        Servico invalido = new Servico(
+                null, "Consulta inválida", BigDecimal.valueOf(-10), 30, true);
+
+        IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class, () -> {
+            service.cadastrar(invalido);
+        });
+        assertEquals("Valor do serviço não pode ser negativo", excecao.getMessage());
+
+        verify(repositorio, never()).save(any());
     }
 }
