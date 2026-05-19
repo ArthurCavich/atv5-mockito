@@ -11,35 +11,48 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class VeterinarioService {
+
     @Autowired
     private VeterinarioRepository repositorio;
+    
+    //Arthur Santana Cavichioli
+    @Transactional
+    public void apagarPorId(Integer id) {
+        Optional<Veterinario> veterinario = repositorio.findById(id);
+
+        if (veterinario.isEmpty()) {
+            throw new RuntimeException("Veterinário não encontrado com id: " + id);
+        }
+
+        repositorio.delete(veterinario.get());
+    }
 
     @Transactional(readOnly = true)
-    public List<Veterinario> buscaVeterinariosComParteNome(String nome){
+    public List<Veterinario> buscaVeterinariosComParteNome(String nome) {
         return repositorio.findByNomeContains(nome);
     }
 
     @Transactional(readOnly = true)
-    public Optional<Veterinario> buscaVeterinariosPeloId(Integer id){
-        Optional<Veterinario> vet =  repositorio.findById(id);
-        if (vet.get().getNome().length()>10){
+    public Optional<Veterinario> buscaVeterinariosPeloId(Integer id) {
+        Optional<Veterinario> vet = repositorio.findById(id);
+        if (vet.get().getNome().length() > 10) {
             vet.get().setNome(vet.get().getNome().substring(0, 10));
         }
         return vet;
     }
 
     @Transactional(readOnly = true)
-    public List<Veterinario> buscaTodosVeterinarios(){
+    public List<Veterinario> buscaTodosVeterinarios() {
         return repositorio.findAll();
     }
 
     @Transactional
-    public Veterinario salvar(Veterinario veterinario){
+    public Veterinario salvar(Veterinario veterinario) {
         return repositorio.save(veterinario);
     }
 
     @Transactional
-    public void apagar(Veterinario veterinario){
+    public void apagar(Veterinario veterinario) {
         repositorio.delete(veterinario);
     }
 }
