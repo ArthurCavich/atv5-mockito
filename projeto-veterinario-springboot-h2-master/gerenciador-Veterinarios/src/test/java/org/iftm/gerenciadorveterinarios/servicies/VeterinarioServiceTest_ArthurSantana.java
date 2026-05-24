@@ -57,7 +57,7 @@ public class VeterinarioServiceTest_ArthurSantana {
 
         // Act + Assert
         assertThrows(RuntimeException.class, () -> {
-            service.apagarPorId(idInexistente);  // nome do método que você vai criar
+            service.apagarPorId(idInexistente);
         });
 
         // Verificar que delete NUNCA foi chamado
