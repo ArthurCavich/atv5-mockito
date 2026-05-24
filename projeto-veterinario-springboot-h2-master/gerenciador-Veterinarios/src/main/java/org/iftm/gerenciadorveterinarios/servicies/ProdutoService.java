@@ -22,4 +22,9 @@ public class ProdutoService {
 
         return repositorio.save(produto);
     }
+
+    public Produto inativar(Integer id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'inativar'");
+    }
 }
