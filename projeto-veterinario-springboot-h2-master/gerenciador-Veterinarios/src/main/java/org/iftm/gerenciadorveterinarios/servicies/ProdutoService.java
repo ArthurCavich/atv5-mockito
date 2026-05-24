@@ -24,7 +24,13 @@ public class ProdutoService {
     }
 
     public Produto inativar(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'inativar'");
+        Produto produto = repositorio.findById(id)
+        .orElseThrow(() -> new RuntimeException(
+            "Produto não encontrado com o id " + id
+        ));
+
+        produto.setAtivo(false);
+
+        return repositorio.save(produto);
     }
 }
