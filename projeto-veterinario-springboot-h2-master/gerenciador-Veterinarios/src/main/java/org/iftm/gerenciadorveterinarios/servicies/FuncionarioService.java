@@ -29,6 +29,7 @@ public class FuncionarioService {
             throw new IllegalArgumentException(
                     "Salário não pode ser menor que o mínimo de R$ 1621,00");
         }
+        funcionario.setEmFerias(false);
         return repositorio.save(funcionario);
     }
 

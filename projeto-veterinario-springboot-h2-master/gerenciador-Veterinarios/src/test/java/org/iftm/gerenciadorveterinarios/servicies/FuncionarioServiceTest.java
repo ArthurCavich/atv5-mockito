@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.iftm.gerenciadorveterinarios.entities.Funcionario;
 import org.iftm.gerenciadorveterinarios.repositories.FuncionarioRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,6 +30,20 @@ public class FuncionarioServiceTest {
 
     @InjectMocks
     private FuncionarioService service;
+
+    @Test
+    @DisplayName("Deve cadastrar funcionário sem estar de férias")
+    public void deveCadastrarFuncionarioSemEstarDeFerias() {
+        Funcionario funcionario = new Funcionario(
+                null, "Ana", "Veterinario(a)", BigDecimal.valueOf(5000), true);
+
+        when(repositorio.save(any(Funcionario.class))).thenReturn(funcionario);
+
+        Funcionario salvo = service.cadastrar(funcionario);
+
+        assertFalse(salvo.isEmFerias());
+        verify(repositorio).save(any(Funcionario.class));
+    }
 
     @Test
     @DisplayName("Retorna funcionários que não estão de férias")

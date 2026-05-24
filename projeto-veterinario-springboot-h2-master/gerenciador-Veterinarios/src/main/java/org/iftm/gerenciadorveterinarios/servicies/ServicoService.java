@@ -26,6 +26,7 @@ public class ServicoService {
                 || servico.getValor().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Valor do serviço não pode ser negativo");
         }
+        servico.setDisponivel(true);
         return repositorio.save(servico);
     }
 

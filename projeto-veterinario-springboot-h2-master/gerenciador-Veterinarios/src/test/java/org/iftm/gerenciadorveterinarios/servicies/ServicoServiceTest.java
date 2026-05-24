@@ -8,6 +8,7 @@ import org.iftm.gerenciadorveterinarios.repositories.ServicoRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +30,19 @@ public class ServicoServiceTest {
 
     @InjectMocks
     private ServicoService service;
+
+    @Test
+    @DisplayName("Deve cadastrar serviço com status disponível ativo")
+    public void deveCadastrarServicoComStatusDisponivelAtivo() {
+        Servico servico = new Servico(null, "Consulta", BigDecimal.valueOf(150), 30, false);
+
+        when(repositorio.save(any(Servico.class))).thenReturn(servico);
+
+        Servico salvo = service.cadastrar(servico);
+
+        assertTrue(salvo.isDisponivel());
+        verify(repositorio).save(any(Servico.class));
+    }
 
     @Test
     @DisplayName("Deve retornar serviços disponíveis")
