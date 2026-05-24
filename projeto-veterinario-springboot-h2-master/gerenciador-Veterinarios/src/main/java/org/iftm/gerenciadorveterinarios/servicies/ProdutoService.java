@@ -12,7 +12,8 @@ public class ProdutoService {
     private ProdutoRepository repositorio;
 
     public Produto cadastrar(Produto produto) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cadastrar'");
+        produto.setAtivo(true);
+
+        return repositorio.save(produto);
     }
 }
