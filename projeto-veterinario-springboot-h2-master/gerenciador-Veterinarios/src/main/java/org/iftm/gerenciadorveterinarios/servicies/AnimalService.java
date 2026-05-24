@@ -12,7 +12,7 @@ public class AnimalService {
     private AnimalRepository repositorio;
 
     public Animal cadastrar(Animal animal) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'cadastrar'");
+        animal.setInternado(true);
+        return repositorio.save(animal);
     }
 }
