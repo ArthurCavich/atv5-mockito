@@ -27,12 +27,15 @@ public class AnimalServiceTest {
     private AnimalService service;
 
     @Test
-    @DisplayName("Deve retornar animais que não estão internados")
-    public void deveRetornarFuncionariosQueNaoEstaoDeFerias(){
+    @DisplayName("Deve cadastrar animal com status internado ativo")
+    public void deveCadastrarAnimalComStatusInternadoAtivo(){
         Animal animal = new Animal(1, "Bicho", "gato", 6, false);
 
         when(repositorio.save(any(Animal.class))).thenReturn(animal);
 
         Animal salvo = service.cadastrar(animal);
-    } 
+
+        assertTrue(salvo.isInternado());
+        verify(repositorio).save(any(Animal.class));
+    }
 }
