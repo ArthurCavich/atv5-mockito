@@ -1,7 +1,9 @@
 package org.iftm.gerenciadorveterinarios.servicies;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,4 +40,15 @@ public class ProdutoServiceTest {
         verify(repositorio).save(any(Produto.class));
     }
 
+    @Test
+    @DisplayName("Deve lançar exceção ao cadastrar produto com preço negativo")
+    public void deveLancarExcecaoAoCadastrarProdutoComPrecoNegativo(){
+        Produto produto = new Produto(1, "Livro de ameaças de RPG", BigDecimal.valueOf(-246), 32, false);
+        
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.cadastrar(produto);
+        });
+
+        verify(repositorio, never()).save(any());
+    }
 }
