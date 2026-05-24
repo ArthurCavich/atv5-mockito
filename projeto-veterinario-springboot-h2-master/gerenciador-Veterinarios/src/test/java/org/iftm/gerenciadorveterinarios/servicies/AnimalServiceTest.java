@@ -1,5 +1,6 @@
 package org.iftm.gerenciadorveterinarios.servicies;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -37,5 +38,15 @@ public class AnimalServiceTest {
 
         assertTrue(salvo.isInternado());
         verify(repositorio).save(any(Animal.class));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao cadastrar animal com espécie inválida")
+    public void deveLancarExcecaoAoCadastrarAnimalComEspecieInvalida(){
+        Animal animal = new Animal(1, "Jaca", "jacaré", 12, false);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            service.cadastrar(animal);
+        });
     }
 }
