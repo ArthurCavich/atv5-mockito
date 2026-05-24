@@ -3,11 +3,9 @@ package org.iftm.gerenciadorveterinarios.servicies;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
 
 import org.iftm.gerenciadorveterinarios.entities.Animal;
 import org.iftm.gerenciadorveterinarios.repositories.AnimalRepository;
@@ -48,5 +46,7 @@ public class AnimalServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {
             service.cadastrar(animal);
         });
+
+        verify(repositorio, never()).save(any());
     }
 }
