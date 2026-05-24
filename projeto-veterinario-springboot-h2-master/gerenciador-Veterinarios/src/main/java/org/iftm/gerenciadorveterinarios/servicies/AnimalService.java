@@ -21,7 +21,12 @@ public class AnimalService {
         }
 
         animal.setInternado(true);
-        
+
         return repositorio.save(animal);
+    }
+
+    public Animal darAlta(Integer id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'darAlta'");
     }
 }
