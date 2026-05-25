@@ -36,7 +36,7 @@ public class FuncionarioServiceTest {
     @DisplayName("Deve cadastrar funcionário sem estar de férias")
     public void deveCadastrarFuncionarioSemEstarDeFerias() {
         Funcionario funcionario = new Funcionario(
-                null, "Ana", "Veterinario(a)", BigDecimal.valueOf(5000), true);
+                1, "Ana", "Veterinario(a)", BigDecimal.valueOf(5000), true);
 
         when(repositorio.save(any(Funcionario.class))).thenReturn(funcionario);
 
@@ -68,7 +68,7 @@ public class FuncionarioServiceTest {
     @DisplayName("Deve lançar exceção ao cadastrar funcionário com salário abaixo do mínimo")
     public void deveLancarExcecaoAoCadastrarComSalarioAbaixoDoMinimo() {
         Funcionario invalido = new Funcionario(
-                null, "João", "Auxiliar", BigDecimal.valueOf(500), false);
+                1, "João", "Auxiliar", BigDecimal.valueOf(500), false);
 
         IllegalArgumentException excecao = assertThrows(IllegalArgumentException.class, () -> {
             service.cadastrar(invalido);
